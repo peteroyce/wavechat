@@ -97,3 +97,4 @@ function registerSocketHandlers(io) {
 }
 
 module.exports = { registerSocketHandlers };
+# typing_start/stop events with per-room tracking
