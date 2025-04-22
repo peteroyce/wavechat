@@ -1,0 +1,15 @@
+version: '3.9'
+services:
+  server:
+    build: ./server
+    ports: ['4000:4000']
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/wavechat
+      - JWT_SECRET=${JWT_SECRET}
+      - CLIENT_URL=http://localhost:5173
+    depends_on: [mongo]
+  mongo:
+    image: mongo:7
+    volumes: [mongo_data:/data/db]
+volumes:
+  mongo_data:
