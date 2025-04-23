@@ -99,3 +99,4 @@ function registerSocketHandlers(io) {
 module.exports = { registerSocketHandlers };
 # typing_start/stop events with per-room tracking
 # emoji reactions toggled by userId
+# reconnection: client should re-join room after socket reconnect
