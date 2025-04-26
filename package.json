@@ -6,7 +6,9 @@
   "workspaces": ["server", "client"],
   "scripts": {
     "dev": "concurrently \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
-    "build": "npm run build --workspace=client"
+    "build": "npm run build --workspace=client",
+    "test": "npm run test --workspace=server && npm run test --workspace=client",
+    "install:all": "npm install"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"
