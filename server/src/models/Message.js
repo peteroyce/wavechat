@@ -11,7 +11,6 @@ const schema = new mongoose.Schema({
   sender:    { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   text:      { type: String, required: true, maxlength: 2000 },
   reactions: [reactionSchema],
-  readBy:    [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true });
 
 schema.index({ room: 1, createdAt: -1 });

@@ -78,7 +78,7 @@ function registerSocketHandlers(io) {
 
         // Send message history (last 50, ascending order)
         const history = await Message.find({ room })
-          .sort({ createdAt: 1 }).limit(50).populate('sender', 'username avatar').lean();
+          .sort({ createdAt: 1 }).limit(50).populate('sender', 'username').lean();
         socket.emit('message_history', history);
 
         // Broadcast presence
@@ -106,7 +106,7 @@ function registerSocketHandlers(io) {
         }
 
         const msg = await Message.create({ room, sender: socket.user.id, text: text.trim() });
-        const populated = await msg.populate('sender', 'username avatar');
+        const populated = await msg.populate('sender', 'username');
         io.to(room).emit('new_message', populated);
       } catch (err) {
         console.error('send_message error:', err);
@@ -151,17 +151,16 @@ function registerSocketHandlers(io) {
           const alreadyReacted = reaction && reaction.userIds.includes(socket.user.id);
           if (alreadyReacted) {
             // Remove the user from the reaction
-            updatedMsg = await Message.findOneAndUpdate(
+            await Message.findOneAndUpdate(
               { _id: messageId, 'reactions.emoji': emoji },
               { $pull: { 'reactions.$.userIds': socket.user.id } },
               { new: true }
             );
-            // Remove empty reaction groups
-            await Message.updateOne(
-              { _id: messageId },
-              { $pull: { reactions: { userIds: { $size: 0 } } } }
-            );
-            updatedMsg = await Message.findById(messageId);
+            // Remove empty reaction groups in application code ($size is not
+            // supported inside a $pull filter in MongoDB)
+            const afterPull = await Message.findById(messageId);
+            afterPull.reactions = afterPull.reactions.filter(r => r.userIds.length > 0);
+            updatedMsg = await afterPull.save();
           } else {
             // Add user to existing reaction
             updatedMsg = await Message.findOneAndUpdate(

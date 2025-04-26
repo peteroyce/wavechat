@@ -1,6 +1,14 @@
 'use strict';
 
 require('dotenv').config();
+
+// Startup validation — fail fast if critical env vars are missing
+const _missingVars = ['JWT_SECRET', 'MONGODB_URI'].filter(v => !process.env[v]);
+if (_missingVars.length > 0) {
+  console.error(`[startup] Missing required environment variable(s): ${_missingVars.join(', ')}. Set them and restart.`);
+  process.exit(1);
+}
+
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
@@ -22,7 +30,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.get('/health', (_, res) => res.json({ status: 'ok' }));
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/wavechat')
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('MongoDB connected');
     registerSocketHandlers(io);

@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { socket } from '../socket.js'
 
+if (!import.meta.env.VITE_SERVER_URL && import.meta.env.DEV) {
+  console.warn('[Login] VITE_SERVER_URL is not set — falling back to http://localhost:4000. Set it in .env for production.')
+}
 const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:4000'
 
 export default function Login() {

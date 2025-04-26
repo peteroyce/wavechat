@@ -9,7 +9,7 @@ const ROOM_NAME_RE = /^[a-zA-Z0-9-]{1,50}$/
 
 export default function Chat() {
   const navigate = useNavigate()
-  const user = JSON.parse(localStorage.getItem('user') || '{}')
+  const [user] = useState(() => JSON.parse(localStorage.getItem('user') || '{}'))
 
   const [room, setRoom] = useState('')
   const [joinedRoom, setJoinedRoom] = useState('')
@@ -35,6 +35,14 @@ export default function Chat() {
       ))
     })
     socket.on('error', ({ message }) => console.error('Socket error:', message))
+    socket.on('reconnect', () => {
+      setJoinedRoom(currentRoom => {
+        if (currentRoom) {
+          socket.emit('join_room', { room: currentRoom })
+        }
+        return currentRoom
+      })
+    })
 
     return () => {
       socket.off('message_history')
@@ -43,8 +51,9 @@ export default function Chat() {
       socket.off('typing')
       socket.off('reaction_update')
       socket.off('error')
+      socket.off('reconnect')
     }
-  }, [])
+  }, [user])
 
   function handleJoinRoom(e) {
     e.preventDefault()
