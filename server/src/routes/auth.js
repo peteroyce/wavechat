@@ -12,6 +12,12 @@ const sign = (user) => jwt.sign(
 
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
+  if (!username || username.trim().length < 2)
+    return res.status(400).json({ error: 'Username must be at least 2 characters' });
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return res.status(400).json({ error: 'Valid email is required' });
+  if (!password || password.length < 8)
+    return res.status(400).json({ error: 'Password must be at least 8 characters' });
   try {
     if (await User.findOne({ $or: [{ email }, { username }] }))
       return res.status(409).json({ error: 'Username or email already taken' });

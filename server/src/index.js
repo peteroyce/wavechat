@@ -29,6 +29,7 @@ app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173', creden
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.get('/health', (_, res) => res.json({ status: 'ok' }));
+app.use((_, res) => res.status(404).json({ error: 'Not found' }));
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
