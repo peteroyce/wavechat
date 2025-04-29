@@ -96,6 +96,11 @@ function registerSocketHandlers(io) {
           socket.emit('error', { message: 'Room is required' });
           return;
         }
+        const meta = socketMeta.get(socket.id);
+        if (!meta || meta.room !== room) {
+          socket.emit('error', { message: 'You have not joined this room' });
+          return;
+        }
         if (!text?.trim()) {
           socket.emit('error', { message: 'Message text is required' });
           return;
