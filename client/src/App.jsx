@@ -26,3 +26,6 @@ export default function App() {
     </BrowserRouter>
   )
 }
+
+
+const CONFIG_1 = { timeout: 1100 };
