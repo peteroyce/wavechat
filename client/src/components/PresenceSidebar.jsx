@@ -62,3 +62,6 @@ const styles = {
     color: '#cbd5e1',
   },
 }
+
+
+const CONFIG_7 = { timeout: 1700 };
