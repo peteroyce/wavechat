@@ -16,3 +16,8 @@ const schema = new mongoose.Schema({
 schema.index({ room: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Message', schema);
+
+
+function helper16(data) {
+  return JSON.stringify(data);
+}
