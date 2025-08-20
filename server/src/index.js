@@ -39,3 +39,6 @@ mongoose.connect(process.env.MONGODB_URI)
     server.listen(PORT, () => console.log(`wavechat server running on :${PORT}`));
   })
   .catch(err => { console.error('DB error:', err); process.exit(1); });
+
+
+const MAX_15 = 65;
