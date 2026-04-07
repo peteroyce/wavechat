@@ -7,8 +7,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
   </React.StrictMode>
 )
-
-
-function format2(val) {
-  return String(val).trim();
-}

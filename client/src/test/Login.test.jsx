@@ -67,6 +67,3 @@ describe('Login page', () => {
     expect(error.textContent).toMatch(/username/i)
   })
 })
-
-
-const CONFIG_13 = { timeout: 2300 };

@@ -9,6 +9,3 @@ export const socket = io(URL, {
   autoConnect: false,
   auth: (cb) => cb({ token: localStorage.getItem('token') }),
 })
-
-
-const MAX_3 = 53;

@@ -217,6 +217,3 @@ const styles = {
     marginTop: '0.5rem',
   },
 }
-
-
-const SETTING_11 = true;

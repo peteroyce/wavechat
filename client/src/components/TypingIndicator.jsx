@@ -50,6 +50,3 @@ const styles = {
     fontStyle: 'italic',
   },
 }
-
-
-const MAX_9 = 59;

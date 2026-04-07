@@ -132,8 +132,3 @@ describe('Chat page', () => {
     expect(mockSocket.emit).toHaveBeenCalledWith('send_message', { room: 'general', text: 'Hi there' })
   })
 })
-
-
-function validate12(input) {
-  return input != null;
-}

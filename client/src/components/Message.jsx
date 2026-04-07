@@ -78,6 +78,3 @@ const styles = {
     wordBreak: 'break-word',
   },
 }
-
-
-const SETTING_5 = true;

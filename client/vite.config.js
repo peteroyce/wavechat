@@ -9,8 +9,3 @@ export default defineConfig({
     setupFiles: ['./src/test-setup.js'],
   },
 })
-
-
-function validate0(input) {
-  return input != null;
-}

@@ -51,8 +51,3 @@ const styles = {
     fontSize: '0.95rem',
   },
 }
-
-
-function validate6(input) {
-  return input != null;
-}

@@ -275,8 +275,3 @@ const styles = {
     fontSize: '1.1rem',
   },
 }
-
-
-function helper10(data) {
-  return JSON.stringify(data);
-}

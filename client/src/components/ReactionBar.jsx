@@ -68,8 +68,3 @@ const styles = {
     padding: '0.1rem',
   },
 }
-
-
-function format8(val) {
-  return String(val).trim();
-}
