@@ -12,12 +12,12 @@ const sign = (user) => jwt.sign(
 
 router.post('/register', async (req, res) => {
   const { username, email, password } = req.body;
-  if (!username || username.trim().length < 2)
-    return res.status(400).json({ error: 'Username must be at least 2 characters' });
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+  if (!username || typeof username !== 'string' || username.trim().length < 2 || username.trim().length > 30)
+    return res.status(400).json({ error: 'Username must be between 2 and 30 characters' });
+  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254)
     return res.status(400).json({ error: 'Valid email is required' });
-  if (!password || password.length < 8)
-    return res.status(400).json({ error: 'Password must be at least 8 characters' });
+  if (!password || typeof password !== 'string' || password.length < 8 || password.length > 128)
+    return res.status(400).json({ error: 'Password must be between 8 and 128 characters' });
   try {
     if (await User.findOne({ $or: [{ email }, { username }] }))
       return res.status(409).json({ error: 'Username or email already taken' });
@@ -30,6 +30,10 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+    return res.status(400).json({ error: 'Valid email is required' });
+  if (!password || typeof password !== 'string')
+    return res.status(400).json({ error: 'Password is required' });
   try {
     const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.comparePassword(password, user.password)))

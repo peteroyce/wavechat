@@ -17,7 +17,9 @@ const RATE_LIMIT_MAX = 5;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 
 const ROOM_NAME_RE = /^[a-zA-Z0-9-]{1,50}$/;
+const OBJECT_ID_RE = /^[0-9a-fA-F]{24}$/;
 const MAX_MESSAGE_LENGTH = 2000;
+const MAX_EMOJI_LENGTH = 10;
 
 function checkRateLimit(ip) {
   const now = Date.now();
@@ -144,6 +146,14 @@ function registerSocketHandlers(io) {
       try {
         if (!messageId || !emoji) {
           socket.emit('error', { message: 'messageId and emoji are required' });
+          return;
+        }
+        if (typeof messageId !== 'string' || !OBJECT_ID_RE.test(messageId)) {
+          socket.emit('error', { message: 'messageId must be a valid ObjectId' });
+          return;
+        }
+        if (typeof emoji !== 'string' || emoji.length > MAX_EMOJI_LENGTH) {
+          socket.emit('error', { message: `emoji must be a string of at most ${MAX_EMOJI_LENGTH} characters` });
           return;
         }
 
